@@ -16,7 +16,9 @@ public class UserDB
 	{	
 		Connect conn = new Connect();
 		String sql = "SELECT * FROM `user` WHERE `Username` = '"+usr+"' AND `Password` = '"+pwd+"'";
+		//System.out.println(sql);
 		String result = conn.Connection(sql);
+		System.out.println("USER " + result);
 
 		if(result.matches("N"))
 		{
@@ -30,15 +32,12 @@ public class UserDB
 			String contactlength = result.substring(1, 3);
 			int conlength = Integer.parseInt(contactlength);
 			
-			dbid = result.substring(3, 15);							//ID
-			xpwd = result.substring(15, 21);						//password - 6 characters only			
-			xcontact = result.substring(21, 21 + conlength);		//contact
-			dbname = result.substring(21 + conlength);				//name
+			dbid = result.substring(3, 8);							//ID
+			xpwd = result.substring(8, 14);						//password - 6 characters only			
+			xcontact = result.substring(14, 14 + conlength);		//contact
+			dbname = result.substring(14 + conlength);				//name
 			
 			String adminResult = result.substring(0,1);					//admin login check
-			
-			if (!xpwd.matches(pwd))
-				return "Unsuccessful";
 			
 			if(adminResult.matches("1")) 
 				adminlogin = true;

@@ -44,38 +44,12 @@ public class Choice
 		frameChoice.getContentPane().setLayout(null);
 		
 		JLabel lblWelcomeUser = new JLabel("Welcome "+user.name);
-		lblWelcomeUser.setBounds(39, 11, 157, 30);
+		lblWelcomeUser.setBounds(39, 11, 200, 30);
 		frameChoice.getContentPane().add(lblWelcomeUser);
 		
 		JLabel lblWhatWouldYou = new JLabel("What would you like to do?");
 		lblWhatWouldYou.setBounds(99, 52, 244, 30);
 		frameChoice.getContentPane().add(lblWhatWouldYou);
-		
-		/*JButton btnNewButton = new JButton("Cab Booking");
-		btnNewButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) 
-			{
-				EventQueue.invokeLater(new Runnable() {
-					public void run() 
-					{
-						try 
-						{
-							frameChoice.setVisible(false);
-							CabChoice window1 = new CabChoice(user);
-							window1.frameCabChoice.setVisible(true);
-						} 
-						
-						catch (Exception e) 
-						{
-							e.printStackTrace();
-						}
-					}
-				});
-			}
-		});
-		
-		btnNewButton.setBounds(109, 93, 146, 30);
-		frameChoice.getContentPane().add(btnNewButton);*/
 		
 		JButton btnRoomBooking = new JButton("Room Booking");
 		btnRoomBooking.addActionListener(new ActionListener() {
@@ -136,7 +110,8 @@ public class Choice
 		String query1 = "SELECT * FROM `user` WHERE `Name` = '"+user.name+"'";
 		ConnectRoom cr = new ConnectRoom();
 		int dues = cr.getdues(query1);
-		//String x = 
+		//System.out.println("Dues query: " + query1);
+		System.out.println(dues);
 		
 		JLabel label = new JLabel(Integer.toString(dues));
 		label.setBounds(378, 19, 46, 14);

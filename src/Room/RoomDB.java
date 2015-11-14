@@ -27,12 +27,13 @@ public class RoomDB //extends Room
 		
 		String details = "SELECT * FROM `rooms` WHERE `RoomType` = '" + ro.roomtype + "'";
 		String result = crc.Search(details, 1, ro); //operation 1 for checking availability
-        System.out.println(result);
+        //System.out.println(result);
         return result;
 	}
 	
 	public void queue(RoomResource ro, User user) throws SQLException
 	{	
+		
 		Dues dues = new Dues();
 		ConnectRoom cr = new ConnectRoom();
 		String details, change;
@@ -45,11 +46,16 @@ public class RoomDB //extends Room
 		else
 		{
 			//rooms are immediately granted
+			ro.bill = dues.calculate(user, ro.roomtype, ro.duration);
+			System.out.println("Duration: " + ro.duration);
+			dues.collect(user, ro.bill);
 			details = "INSERT INTO `hotel`.`bookings` (`RoomNo`, `RoomType`, `GuestName`, `GuestID`, `Start`, `End`, `Reason`, `Bill`, `Granted`, `Email`) VALUES ('"+ro.roomno+"', '"+ro.roomtype+"', '"+user.name+"', '"+user.id+"', '"+ro.startTime+"', '"+ro.endTime+"', '"+ro.reason+"', '"+ro.bill+"', '1', '"+user.contact+"');";
 			change = "UPDATE `hotel`.`rooms` SET `isBooked` = '1' WHERE `rooms`.`RoomNo` = '"+ro.roomno+"'";
+			System.out.println(details);
+			System.out.println(change);
 			cr.Connection(details);
 			cr.Connection(change);
-			dues.collect(user, ro.bill);
+
 		}
 	}
 
@@ -65,6 +71,8 @@ public class RoomDB //extends Room
 	
 	public void cancelDB(int AppNo, String roomno, User user) throws SQLException
 	{	
+		Dues dues = new Dues();
+		dues.refund(user, AppNo);
 		ConnectRoom cr = new ConnectRoom();
 		String details = "DELETE FROM `hotel`.`bookings` WHERE `bookings`.`AppNo` = "+ AppNo;
 		cr.Connection(details);

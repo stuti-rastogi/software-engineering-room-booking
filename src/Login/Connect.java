@@ -38,6 +38,7 @@ public class Connect
 		      	stmt = conn.createStatement();
 
 		      	ResultSet rs = stmt.executeQuery(sql);
+		      	System.out.println(rs.isBeforeFirst());
 		      	//Extract data from result set
 		      
 		      	while(rs.next())
@@ -48,6 +49,8 @@ public class Connect
 		         	String name = rs.getString("Name");
 		         	String password = rs.getString("Password");
 		         	String contact = rs.getString("Contact");
+		         	System.out.println("ID is " + id);
+		         	
 		         	int contactlength = 0;
 		         	contactlength = contact.length();
 		         	

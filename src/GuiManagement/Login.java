@@ -94,12 +94,13 @@ public class Login
 			{
 				String username = textField.getText();			
 				String passwd = passwordField.getText();			//TODO: Check new method, this works
+				System.out.println(passwd);
 				UserDB udb = new UserDB();
 				try 
 				{
 					String ans = udb.UserDBVerify(username, passwd);
 					String adm = ans.substring(0,1);
-					
+					System.out.println(ans);
 					if (ans.matches("0Successful")|| ans.matches("1Successful"))
 					{
 						if(adm.matches("1"))
@@ -169,7 +170,7 @@ public class Login
 		btnExit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) 
 			{
-				JOptionPane.showMessageDialog (null, "Thank You for visiting us...", "Exiting", JOptionPane.INFORMATION_MESSAGE);
+				JOptionPane.showMessageDialog (null, "Thank You for visiting us", "Exiting", JOptionPane.INFORMATION_MESSAGE);
 				frameLogin.setVisible(false);
 				System.exit(0);
 			}

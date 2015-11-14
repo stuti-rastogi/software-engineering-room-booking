@@ -112,7 +112,7 @@ public class Adminroom
 			textField.setColumns(10);
 			textField.setText(" ");
 				
-			JLabel lblOpenTheDrop = new JLabel("Open the drop down menu to see the application");
+			JLabel lblOpenTheDrop = new JLabel("Open the drop down menu to see the applications");
 			lblOpenTheDrop.setBounds(31, 29, 393, 14);
 			frameAdminroom.getContentPane().add(lblOpenTheDrop);
 				
@@ -151,7 +151,7 @@ public class Adminroom
 				{
 					String inp = comboBox.getSelectedItem().toString();
 					String inpid = inp.substring(16, 18);
-					String sql = "SELECT * FROM `hotel`.`bookings` WHERE `room`.`AppNo` = "+inpid;
+					String sql = "SELECT * FROM `hotel`.`bookings` WHERE `bookings`.`AppNo` = "+inpid;
 					ConnectRoom cr = new ConnectRoom();
 					lblNewLabel.setText(cr.getreason(sql));					
 				}
@@ -182,11 +182,13 @@ public class Adminroom
 					{
 						ans = 1;
 						
-						String ordersql = "UPDATE `hotel`.`bookings` SET `Granted` = '"+ans+"', `Reason denied` = '"+textField.getText()+"' WHERE `room`.`AppNo` = '"+inpid+"';";
+						String ordersql = "UPDATE `hotel`.`bookings` SET `Granted` = '"+ans+"', `ReasonDenied` = '"+textField.getText()+"' WHERE `bookings`.`AppNo` = '"+inpid+"';";
 						cr.Connection(ordersql);
 						
 						String order2 = "UPDATE `hotel`.`rooms` SET `isBooked` = '1' WHERE `rooms`.`RoomNo` = '"+rno+"';";
 						cr.Connection(order2);
+						
+						
 					}
 					else
 					{

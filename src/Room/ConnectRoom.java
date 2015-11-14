@@ -471,7 +471,7 @@ public class ConnectRoom
 		    while(rs.next())
 		    {
 		        //Retrieve by column name
-		    	String reasondenied = rs.getString("Reason denied");
+		    	String reasondenied = rs.getString("ReasonDenied");
 		        AppNo = rs.getLong("AppNo");
 		        String reason = rs.getString("Reason");
 		        return reason;  	        
@@ -541,16 +541,26 @@ public class ConnectRoom
 			stmt = conn.createStatement();
 
 			ResultSet rs = stmt.executeQuery(sql);
+			System.out.println("Is empty? " + rs.isBeforeFirst());
+			
 			while(rs.next())
 			{
 				//Retrieve by column name
 			    if(operation == 0)
+			    {
 			    	cost = rs.getInt("UnitCost");
+			    	System.out.println("Cost: " + cost);
+			    }
+			    	
 			    else if(operation == 1)
 			    	cost = rs.getInt("SUM(Amount)");
-			    else 
+			    else if(operation == 2)
+			    {
 			    	cost = rs.getInt("Bill");
-			        return cost;
+			    	System.out.println("CostRefund: " + cost);
+			    }
+			    
+			    return cost;
 			}
 			      
 			rs.close();//return "no problem";
@@ -603,7 +613,7 @@ public class ConnectRoom
 		
 		// JDBC driver name and database URL
 		final String JDBC_DRIVER = "com.mysql.jdbc.Driver";  
-		final String DB_URL = "jdbc:mysql://localhost:3306/oop";
+		final String DB_URL = "jdbc:mysql://localhost:3306/hotel";
 
 		//  Database credentials
 		final String USER = "root";
@@ -614,15 +624,16 @@ public class ConnectRoom
 		long AppNo = 0;
 		try
 		{
-			Class.forName("com.mysql.jdbc.Driver");
+			Class.forName(JDBC_DRIVER);
 			conn = DriverManager.getConnection(DB_URL, USER, PASS);
 
 		    stmt = conn.createStatement();
 		    ResultSet rs = stmt.executeQuery(sql);
-		      
+		    System.out.println(rs.isBeforeFirst());
 		    while(rs.next())
 		    {
 		         int due = rs.getInt("Amount");
+		         System.out.println("DUE: " + due);
 		         return due;
 		    }
 		    

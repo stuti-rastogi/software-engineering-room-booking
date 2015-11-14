@@ -6,7 +6,9 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.concurrent.TimeUnit;
 import java.sql.Timestamp;
+import java.util.concurrent.*;
 
 import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
@@ -21,6 +23,7 @@ import javax.swing.JButton;
 import javax.swing.JTextField;
 
 import Login.User;
+import Room.Dues;
 import Room.RoomResource;
 import Room.RoomDB;
 
@@ -62,12 +65,12 @@ public class BookRoom
 		frameBookroom.getContentPane().add(lblEnterTheDetails);
 		
 		JLabel lblRoomNo = new JLabel("Room Type");
-		lblRoomNo.setBounds(52, 36, 69, 14);
+		lblRoomNo.setBounds(52, 36, 75, 14);
 		frameBookroom.getContentPane().add(lblRoomNo);
 		
 		final JComboBox comboBox = new JComboBox();
 		comboBox.setModel(new DefaultComboBoxModel(new String[] {"Deluxe", "Suite", "Conference Room", "Banquet Hall"}));
-		comboBox.setBounds(227, 33, 60, 20);
+		comboBox.setBounds(227, 33, 100, 20);
 		frameBookroom.getContentPane().add(comboBox);
 		
 		JLabel lblSelectDateOf = new JLabel("Select Start Date and time");
@@ -75,17 +78,17 @@ public class BookRoom
 		frameBookroom.getContentPane().add(lblSelectDateOf);
 		
 		final JSpinner spinner = new JSpinner();
-		spinner.setModel(new SpinnerDateModel(new Date(1416421800000L), new Date(1416421800000L), new Date(1420050540000L), Calendar.DAY_OF_MONTH));
-		spinner.setBounds(227, 61, 148, 20);
+		spinner.setModel(new SpinnerDateModel(new Date(1448080200000L), new Date(1448080200000L), new Date(1479702600000L), Calendar.DAY_OF_MONTH));
+		spinner.setBounds(227, 61, 155, 20);
 		frameBookroom.getContentPane().add(spinner);
 		
 		JLabel lblEndDateOf = new JLabel("Select End Date and time");
-		lblSelectDateOf.setBounds(10, 61, 219, 20);
+		lblEndDateOf.setBounds(10, 101, 219, 20);
 		frameBookroom.getContentPane().add(lblEndDateOf);
 		
 		final JSpinner spinnerEnd = new JSpinner();
-		spinner.setModel(new SpinnerDateModel(new Date(1416421800000L), new Date(1416421800000L), new Date(1420050540000L), Calendar.DAY_OF_MONTH));
-		spinner.setBounds(227, 61, 148, 20);
+		spinnerEnd.setModel(new SpinnerDateModel(new Date(1448080200000L), new Date(1448080200000L), new Date(1479702600000L), Calendar.DAY_OF_MONTH));
+		spinnerEnd.setBounds(227, 101, 148, 20);
 		frameBookroom.getContentPane().add(spinnerEnd);
 		
 		JButton btnNewButton = new JButton("Check Availability");
@@ -162,7 +165,7 @@ public class BookRoom
 		frameBookroom.getContentPane().add(btnNewButton);
 		
 		JLabel lblReason = new JLabel("Reason (for conference room/banquet hall bookings only)");
-		lblReason.setBounds(52, 160, 46, 14);
+		lblReason.setBounds(52, 160, 146, 14);
 		frameBookroom.getContentPane().add(lblReason);
 		
 		final JFormattedTextField formattedTextField = new JFormattedTextField();
@@ -215,6 +218,17 @@ public class BookRoom
 					{
 						ro.startTime = startTime;
 						ro.endTime = endTime;
+						Long diff = ro.endTime.getTime() - ro.startTime.getTime();
+						if (ro.roomtype > 2)
+						{
+							//per hour basis
+							ro.duration = (int)TimeUnit.HOURS.convert(diff, TimeUnit.MILLISECONDS);
+						}
+						else
+						{
+							//per day basis
+							ro.duration = (int)TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
+						}
 						
 						RoomDB rdb = new RoomDB();
 						String avail = rdb.roomCheck(ro);
@@ -225,6 +239,7 @@ public class BookRoom
 						}
 						else
 						{
+							ro.roomno = avail;
 							ro.reason = formattedTextField.getText();
 							JOptionPane.showMessageDialog (null,"Selected room is available for mentioned duration", "Available", JOptionPane.INFORMATION_MESSAGE);
 							int x =JOptionPane.showConfirmDialog(null, "Do you want to book room", "Confirm booking",JOptionPane.YES_NO_OPTION);

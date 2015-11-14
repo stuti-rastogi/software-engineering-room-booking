@@ -44,7 +44,7 @@ public class Admin
 		frameAdmin.getContentPane().add(lblWelcomeAdmin);
 		
 		JLabel lblWhatDoYou = new JLabel("Click below to handle bookings");
-		lblWhatDoYou.setBounds(153, 49, 198, 34);
+		lblWhatDoYou.setBounds(153, 49, 210, 34);
 		frameAdmin.getContentPane().add(lblWhatDoYou);
 		
 		JButton btnRoom = new JButton("Rooms");
