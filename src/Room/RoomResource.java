@@ -26,6 +26,7 @@ public class RoomResource extends Resource
 	int roomtype;
 	public String reasondenied;
 	public Timestamp startTime, endTime;
+	public long appNo;
 	
 	Scanner scan = new Scanner(System.in);
 	

@@ -19,7 +19,6 @@ public class ConnectRoom
 {
 	public void Connection(String sql)
 	{
-			String result="";
 			
 			// JDBC driver name and database URL
 		   	final String JDBC_DRIVER = "com.mysql.jdbc.Driver";  
@@ -35,7 +34,7 @@ public class ConnectRoom
 		   
 		   	try
 		   	{
-		      	Class.forName("com.mysql.jdbc.Driver");
+		      	Class.forName(JDBC_DRIVER);
 		      	conn = DriverManager.getConnection(DB_URL, USER, PASS);
 
 		      	stmt = conn.createStatement();
@@ -102,7 +101,7 @@ public class ConnectRoom
 			if(operation==1)
 			{
 				//check availability
-				Class.forName("com.mysql.jdbc.Driver");
+				Class.forName(JDBC_DRIVER);
 
 				conn = DriverManager.getConnection(DB_URL, USER, PASS);
 				stmt = conn.createStatement();
@@ -192,6 +191,7 @@ public class ConnectRoom
 				    String reasondenied = rs.getString("ReasonDenied");
 				    String roomtype  = rs.getString("RoomType");
 				    String guestName = rs.getString("GuestName");
+				    String email = rs.getString("Email");
 				    Timestamp start = rs.getTimestamp("Start");
 				    Timestamp end = rs.getTimestamp("End");
 				    AppNo = rs.getLong("AppNo");
