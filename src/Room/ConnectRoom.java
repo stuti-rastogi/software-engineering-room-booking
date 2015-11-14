@@ -514,4 +514,153 @@ public class ConnectRoom
 		}//end try
 		return "no";	   
 	}
+	
+	public int costCalc(String sql, int roomType, int operation)
+	{ 
+		//0 = for total calculation and 
+		//1 = getting loan amount and 
+		//2 = getting amount to be refunded
+		//String result="";
+		// JDBC driver name and database URL
+		
+		int cost = 0;
+		final String JDBC_DRIVER = "com.mysql.jdbc.Driver";  
+		final String DB_URL = "jdbc:mysql://localhost:3306/hotel";
+
+		//  Database credentials
+		final String USER = "root";
+		final String PASS = "";
+		   
+		Connection conn = null;
+		Statement stmt = null;
+		   
+		try
+		{
+			Class.forName(JDBC_DRIVER);
+			conn = DriverManager.getConnection(DB_URL, USER, PASS);
+			stmt = conn.createStatement();
+
+			ResultSet rs = stmt.executeQuery(sql);
+			while(rs.next())
+			{
+				//Retrieve by column name
+			    if(operation == 0)
+			    	cost = rs.getInt("UnitCost");
+			    else if(operation == 1)
+			    	cost = rs.getInt("SUM(Amount)");
+			    else 
+			    	cost = rs.getInt("Bill");
+			        return cost;
+			}
+			      
+			rs.close();//return "no problem";
+		}
+		      
+		catch(SQLException se)
+		{
+			//Handle errors for JDBC
+		    se.printStackTrace(); //return "no problem";
+		}
+		
+		catch(Exception e)
+		{
+			//Handle errors for Class.forName
+		    e.printStackTrace();//return "no problem";
+		}
+		
+		finally
+		{
+		    //finally block used to close resources
+		    try
+		    {
+		        if(stmt!=null)
+		        	conn.close();
+		    }
+		    catch(SQLException se)
+		    {
+		    	// do nothing
+		    }
+		      
+		    try
+		    {
+		        if(conn!=null)
+		            conn.close();
+		    }
+		    catch(SQLException se)
+		    {
+		        se.printStackTrace();
+		    }//end finally try
+		}//end try
+		
+		return cost;	   
+	}
+	
+	public int getdues(String sql)
+	{ 
+		//operation 3 to send mail and operation 1 for checking availability
+		int count=0;
+		String[] results = new String[100];
+		
+		// JDBC driver name and database URL
+		final String JDBC_DRIVER = "com.mysql.jdbc.Driver";  
+		final String DB_URL = "jdbc:mysql://localhost:3306/oop";
+
+		//  Database credentials
+		final String USER = "root";
+		final String PASS = "";
+		   
+		Connection conn = null;
+		Statement stmt = null;
+		long AppNo = 0;
+		try
+		{
+			Class.forName("com.mysql.jdbc.Driver");
+			conn = DriverManager.getConnection(DB_URL, USER, PASS);
+
+		    stmt = conn.createStatement();
+		    ResultSet rs = stmt.executeQuery(sql);
+		      
+		    while(rs.next())
+		    {
+		         int due = rs.getInt("Amount");
+		         return due;
+		    }
+		    
+		    rs.close();
+		}
+		catch(SQLException se)
+		{
+		    //Handle errors for JDBC
+		    se.printStackTrace();
+		}
+		catch(Exception e)
+		{
+		    //Handle errors for Class.forName
+		    e.printStackTrace();
+		}
+		finally
+		{
+		    //finally block used to close resources
+		    try
+		    {
+		        if(stmt!=null)
+		        	conn.close();
+		    }
+		    catch(SQLException se)
+		    {
+		    	// do nothing
+		    }
+		      
+		    try
+		    {
+		        if(conn!=null)
+		            conn.close();
+		    }
+		    catch(SQLException se)
+		    {
+		        se.printStackTrace();
+		    }//end finally try
+		}//end try	
+		return 0;
+	}
 }

@@ -14,8 +14,10 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Scanner;
+import java.util.concurrent.TimeUnit;
 import java.sql.Timestamp;
 import java.text.DateFormat;
+import java.util.concurrent.TimeUnit;
 
 import Login.User;
 import Main.Resource;
@@ -24,6 +26,7 @@ public class RoomResource extends Resource
 {
 	public String reason, roomno;
 	public int roomtype;
+	public int bill;
 	public String reasondenied;
 	public Timestamp startTime, endTime;
 	public long appNo;
@@ -193,6 +196,9 @@ public class RoomResource extends Resource
 	        long time = date.getTime();
 	        ro.endTime = new Timestamp(time);
 		}
+		
+		Long diff = ro.endTime.getTime() - ro.startTime.getTime();
+		int units = 0;
 			
 		System.out.println("Select a room type");	
 		System.out.println("1  -  Deluxe room");
@@ -202,6 +208,20 @@ public class RoomResource extends Resource
 		
 		int newchoice = scan.nextInt();
 		ro.roomtype = newchoice;
+		if (ro.roomtype > 2)
+		{
+			//per hour basis
+			units = (int)TimeUnit.HOURS.convert(diff, TimeUnit.MILLISECONDS);
+		}
+		else
+		{
+			//per day basis
+			units = (int)TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
+		}
+		
+		Dues dues = new Dues();
+		ro.bill = dues.calculate(user, ro.roomtype, units);
+		
 		String resultAvail = rodb.roomCheck(ro);	
 		
 		if(resultAvail.matches("problem"))
@@ -235,6 +255,7 @@ public class RoomResource extends Resource
 	
 	public void cancel(User user) throws SQLException
 	{	
+		Dues dues = new Dues();
 		RoomResource ro = new RoomResource();
 		RoomDB rodb = new RoomDB();
 		
@@ -256,6 +277,7 @@ public class RoomResource extends Resource
 				return;
 			
 			rodb.cancelDB(AppNo, "", user);
+			dues.refund(user, AppNo);
 		}	
 	}	
 }

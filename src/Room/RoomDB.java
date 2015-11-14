@@ -33,6 +33,7 @@ public class RoomDB //extends Room
 	
 	public void queue(RoomResource ro, User user) throws SQLException
 	{	
+		Dues dues = new Dues();
 		ConnectRoom cr = new ConnectRoom();
 		String details, change;
 		if (ro.roomtype > 2)
@@ -44,11 +45,12 @@ public class RoomDB //extends Room
 		else
 		{
 			//rooms are immediately granted
-			details = "INSERT INTO `hotel`.`bookings` (`RoomNo`, `RoomType`, `GuestName`, `GuestID`, `Start`, `End`, `Reason`, `Granted`, `Email`) VALUES ('"+ro.roomno+"', '"+ro.roomtype+"', '"+user.name+"', '"+user.id+"', '"+ro.startTime+"', '"+ro.endTime+"', '"+ro.reason+"', '1', '"+user.contact+"');";
+			details = "INSERT INTO `hotel`.`bookings` (`RoomNo`, `RoomType`, `GuestName`, `GuestID`, `Start`, `End`, `Reason`, `Bill`, `Granted`, `Email`) VALUES ('"+ro.roomno+"', '"+ro.roomtype+"', '"+user.name+"', '"+user.id+"', '"+ro.startTime+"', '"+ro.endTime+"', '"+ro.reason+"', '"+ro.bill+"', '1', '"+user.contact+"');";
 			change = "UPDATE `hotel`.`rooms` SET `isBooked` = '1' WHERE `rooms`.`RoomNo` = '"+ro.roomno+"'";
 			cr.Connection(details);
 			cr.Connection(change);
-		}	
+			dues.collect(user, ro.bill);
+		}
 	}
 
 	public String checkDB(User user) throws SQLException

@@ -7,6 +7,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.JLabel;
 import javax.swing.JButton;
+import Room.ConnectRoom;
 
 import Login.User;
 
@@ -128,18 +129,18 @@ public class Choice
 		btnLogout.setBounds(109, 206, 146, 30);
 		frameChoice.getContentPane().add(btnLogout);
 		
-		/*JLabel lblYourSwdDues = new JLabel("Your SWD dues - ");
-		lblYourSwdDues.setBounds(223, 19, 140, 14);
-		frameChoice.getContentPane().add(lblYourSwdDues);
+		JLabel lblYourDues = new JLabel("Your current dues - ");
+		lblYourDues.setBounds(223, 19, 140, 14);
+		frameChoice.getContentPane().add(lblYourDues);
 		
 		String query1 = "SELECT * FROM `user` WHERE `Name` = '"+user.name+"'";
-		ConnectCab ccb = new ConnectCab();
-		int dues = ccb.getDues(query1);
+		ConnectRoom cr = new ConnectRoom();
+		int dues = cr.getdues(query1);
 		//String x = 
 		
 		JLabel label = new JLabel(Integer.toString(dues));
 		label.setBounds(378, 19, 46, 14);
-		frameChoice.getContentPane().add(label);*/
+		frameChoice.getContentPane().add(label);
 	}
 
 }
