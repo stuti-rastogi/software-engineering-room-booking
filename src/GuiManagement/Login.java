@@ -83,9 +83,9 @@ public class Login
 		passwordField.setBounds(163, 135, 86, 20);
 		frameLogin.getContentPane().add(passwordField);
 		
-		JLabel lblWelcomeToOur = new JLabel("Welcome to Our Portal");
+		JLabel lblWelcomeToOur = new JLabel("Welcome to Silver Sands Hotel");
 		lblWelcomeToOur.setFont(new Font("Sylfaen", Font.BOLD, 18));
-		lblWelcomeToOur.setBounds(109, 23, 224, 54);
+		lblWelcomeToOur.setBounds(109, 23, 324, 54);
 		frameLogin.getContentPane().add(lblWelcomeToOur);
 		
 		JButton btnLogin = new JButton("Login");
@@ -93,18 +93,19 @@ public class Login
 			public void actionPerformed(ActionEvent arg0) 
 			{
 				String username = textField.getText();			
-				String passwd = passwordField.getText();
+				String passwd = passwordField.getText();			//TODO: Check new method, this works
 				UserDB udb = new UserDB();
 				try 
 				{
-					String ans = udb.UserDBVerify(username,passwd);
+					String ans = udb.UserDBVerify(username, passwd);
 					String adm = ans.substring(0,1);
 					
 					if (ans.matches("0Successful")|| ans.matches("1Successful"))
 					{
 						if(adm.matches("1"))
 						{
-							final User user = udb.isVerified();
+							//this is admin
+							final User user = udb.isVerified();			//new user object based on credentials
 							EventQueue.invokeLater(new Runnable() {
 								public void run() 
 								{

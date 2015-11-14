@@ -94,7 +94,7 @@ public class RoomCancel
 				frameRoomCancel.getContentPane().add(lblYourEarlierBookings);
 				
 				ConnectRoom cr = new ConnectRoom();
-				String sql = "SELECT * FROM `oop`.`room` WHERE `Student` = '"+user.name+"'";
+				String sql = "SELECT * FROM `hotel`.`bookings` WHERE `GuestName` = '"+user.name+"'";
 				String[] entries = cr.getOldEntries(sql);
 				int total = 0;
 				
@@ -130,10 +130,10 @@ public class RoomCancel
 						SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm");
 						String inp = comboBox.getSelectedItem().toString();
 						String inpid = inp.substring(16, 18);
-						int roomid = Integer.parseInt(inpid);
+						String roomno = inp.substring(25, 29);
+						int appid = Integer.parseInt(inpid);
 						
-						System.out.println(roomid);
-						String query = "SELECT * FROM `oop`.`room` WHERE `room`.`AppNo` = "+roomid;
+						String query = "SELECT * FROM `hotel`.`bookings` WHERE `bookings`.`AppNo` = "+appid;
 						String bookdate = cr1.getDate(query);
 						System.out.println(bookdate);
 						
@@ -155,7 +155,7 @@ public class RoomCancel
 								try 
 								{
 									RoomDB db2 = new RoomDB();
-									db2.cancelDB(roomid, user);
+									db2.cancelDB(appid, roomno, user);
 									JOptionPane.showMessageDialog (null, "Room has been successfully cancelled.", "Cancellation", JOptionPane.INFORMATION_MESSAGE);
 									EventQueue.invokeLater(new Runnable() {
 										public void run() 

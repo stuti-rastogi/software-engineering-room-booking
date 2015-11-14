@@ -1,4 +1,4 @@
-package GuiManagement;
+ package GuiManagement;
 
 import java.awt.EventQueue;
 
@@ -43,11 +43,11 @@ public class Admin
 		lblWelcomeAdmin.setBounds(24, 23, 105, 34);
 		frameAdmin.getContentPane().add(lblWelcomeAdmin);
 		
-		JLabel lblWhatDoYou = new JLabel("What do you want to do ?");
+		JLabel lblWhatDoYou = new JLabel("Click below to handle bookings");
 		lblWhatDoYou.setBounds(153, 49, 198, 34);
 		frameAdmin.getContentPane().add(lblWhatDoYou);
 		
-		JButton btnRoom = new JButton("Room");
+		JButton btnRoom = new JButton("Rooms");
 		btnRoom.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) 
 			{
@@ -75,7 +75,7 @@ public class Admin
 		btnLogout.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) 
 			{
-				JOptionPane.showMessageDialog (null, "Logging out...", "logout", JOptionPane.INFORMATION_MESSAGE);
+				JOptionPane.showMessageDialog (null, "You are logged out", "logout", JOptionPane.INFORMATION_MESSAGE);
 				EventQueue.invokeLater(new Runnable() {
 					public void run() 
 					{

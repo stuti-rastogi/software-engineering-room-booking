@@ -6,6 +6,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.sql.Timestamp;
 
 import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
@@ -60,16 +61,16 @@ public class BookRoom
 		lblEnterTheDetails.setBounds(30, 11, 241, 14);
 		frameBookroom.getContentPane().add(lblEnterTheDetails);
 		
-		JLabel lblRoomNo = new JLabel("Room No.");
+		JLabel lblRoomNo = new JLabel("Room Type");
 		lblRoomNo.setBounds(52, 36, 69, 14);
 		frameBookroom.getContentPane().add(lblRoomNo);
 		
 		final JComboBox comboBox = new JComboBox();
-		comboBox.setModel(new DefaultComboBoxModel(new String[] {"c301", "c302", "c303", "c304", "c305", "c306", "c307", "c308", "a501", "a502", "a503", "a504", "a505", "a506", "a507", "a508"}));
+		comboBox.setModel(new DefaultComboBoxModel(new String[] {"Deluxe", "Suite", "Conference Room", "Banquet Hall"}));
 		comboBox.setBounds(227, 33, 60, 20);
 		frameBookroom.getContentPane().add(comboBox);
 		
-		JLabel lblSelectDateOf = new JLabel("Select Date and time of booking");
+		JLabel lblSelectDateOf = new JLabel("Select Start Date and time");
 		lblSelectDateOf.setBounds(10, 61, 219, 20);
 		frameBookroom.getContentPane().add(lblSelectDateOf);
 		
@@ -78,14 +79,14 @@ public class BookRoom
 		spinner.setBounds(227, 61, 148, 20);
 		frameBookroom.getContentPane().add(spinner);
 		
-		JLabel lblEnterTheDuration = new JLabel("Enter the duration (hours)");
-		lblEnterTheDuration.setBounds(20, 92, 163, 14);
-		frameBookroom.getContentPane().add(lblEnterTheDuration);
+		JLabel lblEndDateOf = new JLabel("Select End Date and time");
+		lblSelectDateOf.setBounds(10, 61, 219, 20);
+		frameBookroom.getContentPane().add(lblEndDateOf);
 		
-		final JSpinner spinner_1 = new JSpinner();
-		spinner_1.setModel(new SpinnerNumberModel(1, 1, 10, 1));
-		spinner_1.setBounds(227, 92, 44, 20);
-		frameBookroom.getContentPane().add(spinner_1);
+		final JSpinner spinnerEnd = new JSpinner();
+		spinner.setModel(new SpinnerDateModel(new Date(1416421800000L), new Date(1416421800000L), new Date(1420050540000L), Calendar.DAY_OF_MONTH));
+		spinner.setBounds(227, 61, 148, 20);
+		frameBookroom.getContentPane().add(spinnerEnd);
 		
 		JButton btnNewButton = new JButton("Check Availability");
 		btnNewButton.addActionListener(new ActionListener() {
@@ -94,8 +95,16 @@ public class BookRoom
 				try 
 				{
 					RoomResource ro = new RoomResource();
-					ro.roomno = (String) comboBox.getSelectedItem();
-					ro.duration = Integer.parseInt(spinner_1.getValue().toString()); //hours
+					String roomType = (String) comboBox.getSelectedItem();
+					
+					if (roomType.matches("Deluxe"))
+						ro.roomtype = 1;
+					else if (roomType.matches("Suite"))
+						ro.roomtype = 2;
+					else if (roomType.matches("Conference Room"))
+						ro.roomtype = 3;
+					else if (roomType.matches("Banquet Hall"))
+						ro.roomtype = 4;
 					
 					Calendar cal = Calendar.getInstance();
 					Calendar calnew = Calendar.getInstance();
@@ -106,7 +115,15 @@ public class BookRoom
 			        SimpleDateFormat sdf = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
 			        Date dobook = sdf.parse(date);
 			        calnew.setTime(dobook);
+			        
+			        Timestamp startTime = new Timestamp(dobook.getTime());
+			        
+			        String endDate = spinnerEnd.getValue().toString();
+			        SimpleDateFormat sdfEnd = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
+			        Date dobookEnd = sdf.parse(endDate);
 					
+			        Timestamp endTime = new Timestamp(dobookEnd.getTime());
+			        
 					if(calnew.compareTo(cal) < 0)
 					{ 
 						//checks whether cal>calnew
@@ -115,22 +132,15 @@ public class BookRoom
 					
 					else
 					{
-						ro.day = dobook.getDate();
-						ro.mon = dobook.getMonth()+1;
-						ro.year = 2014;
-						System.out.println(ro.year);
-						
-						ro.hr = dobook.getHours();
-						ro.min = dobook.getMinutes();
-						ro.start = ro.hr+(ro.min/100);
-						ro.end = ro.start+ro.duration;
+						ro.startTime = startTime;
+						ro.endTime = endTime;
 						
 						RoomDB rdb = new RoomDB();
-						boolean avail = rdb.RoomChk(ro);
+						String avail = rdb.roomCheck(ro);
 						
-						if(avail==false)
+						if(avail.matches("problem"))
 						{
-							JOptionPane.showMessageDialog(null, "Selected room is not available...Select another room", "Error", JOptionPane.ERROR_MESSAGE);	
+							JOptionPane.showMessageDialog(null, "Sorry, selected room is not available.", "Error", JOptionPane.ERROR_MESSAGE);	
 						}
 						else
 						{
@@ -151,7 +161,7 @@ public class BookRoom
 		btnNewButton.setBounds(227, 123, 160, 23);
 		frameBookroom.getContentPane().add(btnNewButton);
 		
-		JLabel lblReason = new JLabel("Reason");
+		JLabel lblReason = new JLabel("Reason (for conference room/banquet hall bookings only)");
 		lblReason.setBounds(52, 160, 46, 14);
 		frameBookroom.getContentPane().add(lblReason);
 		
@@ -167,18 +177,35 @@ public class BookRoom
 				try 
 				{
 					RoomResource ro = new RoomResource();
-					ro.roomno = (String) comboBox.getSelectedItem();
-					ro.duration = Integer.parseInt(spinner_1.getValue().toString()); //hours
+					String roomType = (String) comboBox.getSelectedItem();
+					
+					if (roomType.matches("Deluxe"))
+						ro.roomtype = 1;
+					else if (roomType.matches("Suite"))
+						ro.roomtype = 2;
+					else if (roomType.matches("Conference Room"))
+						ro.roomtype = 3;
+					else if (roomType.matches("Banquet Hall"))
+						ro.roomtype = 4;
 					
 					Calendar cal = Calendar.getInstance();
 					Calendar calnew = Calendar.getInstance();
 					cal.setTime(new Date());
 					cal.add(Calendar.DAY_OF_MONTH, 1);
 			        
-			        String date = spinner.getValue().toString();
+					String date = spinner.getValue().toString();
 			        SimpleDateFormat sdf = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
 			        Date dobook = sdf.parse(date);
 			        calnew.setTime(dobook);
+			        
+			        Timestamp startTime = new Timestamp(dobook.getTime());
+			        
+			        String endDate = spinnerEnd.getValue().toString();
+			        SimpleDateFormat sdfEnd = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
+			        Date dobookEnd = sdf.parse(endDate);
+					
+			        Timestamp endTime = new Timestamp(dobookEnd.getTime());
+			        
 					if(calnew.compareTo(cal) < 0)
 					{ 
 						//checks whether cal>calnew
@@ -186,23 +213,15 @@ public class BookRoom
 					}
 					else
 					{
-						ro.day = dobook.getDate();
-						ro.mon = dobook.getMonth()+1;
-						ro.year = 2014;
-						
-						System.out.println(ro.year);
-						
-						ro.hr = dobook.getHours();
-						ro.min = dobook.getMinutes();
-						ro.start = ro.hr+(ro.min/100);//System.out.println(ro.start);
-						ro.end = ro.start+ro.duration;//System.out.println(ro.end);
+						ro.startTime = startTime;
+						ro.endTime = endTime;
 						
 						RoomDB rdb = new RoomDB();
-						boolean avail = rdb.RoomChk(ro);
-						if(avail == false)
+						String avail = rdb.roomCheck(ro);
+						
+						if(avail.matches("problem"))
 						{
-							JOptionPane.showMessageDialog(null, "Selected room is not available...Select another room", "Error", JOptionPane.ERROR_MESSAGE);
-							
+							JOptionPane.showMessageDialog(null, "Sorry, selected room is not available.", "Error", JOptionPane.ERROR_MESSAGE);	
 						}
 						else
 						{
@@ -213,7 +232,7 @@ public class BookRoom
 							if(x == JOptionPane.YES_OPTION)
 							{
 								rdb.queue(ro, user);
-								JOptionPane.showMessageDialog (null,"Room successfully queued", "Successful", JOptionPane.INFORMATION_MESSAGE);
+								JOptionPane.showMessageDialog (null,"Application received", "Successful", JOptionPane.INFORMATION_MESSAGE);
 								EventQueue.invokeLater(new Runnable() {
 									public void run() 
 									{

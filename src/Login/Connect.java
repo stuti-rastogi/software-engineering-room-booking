@@ -57,7 +57,7 @@ public class Connect
 		         	else 
 		         		dummy = Integer.toString(contactlength);
 		         	
-		         	result = admin+dummy+id+contact+name;
+		         	result = admin+dummy+id+password+contact+name;
 		      	}
 		      	
 		      	if(result=="")

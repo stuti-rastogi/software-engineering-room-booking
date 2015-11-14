@@ -11,6 +11,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 import Email.SendEmail;
@@ -270,7 +271,7 @@ public class ConnectRoom
 		// JDBC driver name and database URL
 		
 		final String JDBC_DRIVER = "com.mysql.jdbc.Driver";  
-		final String DB_URL = "jdbc:mysql://localhost:3306/oop";
+		final String DB_URL = "jdbc:mysql://localhost:3306/hotel";
 
 		//  Database credentials
 		final String USER = "root";
@@ -303,11 +304,11 @@ public class ConnectRoom
 		          
 		        if(granted==0)
 		        {
-		        	results[count]=("Application No. "+AppNo+" Room "+roomno+" is queued");
+		        	results[count]=("Application No. " + AppNo + ", Room " + roomno + " is queued");
 		        }
 		        else if(granted==1)
 		        {
-		        	results[count]=("Application No. "+AppNo+" Room "+roomno+" is  booked");
+		        	results[count]=("Application No. " + AppNo + ", Room " + roomno + " is  booked");
 		        }
 		        else 
 		        	results[count]=("Application No. "+AppNo+" for Room "+roomno+" was denied because "+reasondenied);
@@ -364,14 +365,14 @@ public class ConnectRoom
 		return results;	   
 	}
 	
-	/*public String getDate(String sql)
+	public String getDate(String sql)
 	{   	
 		//0 = update, 1 = execute
 		String result="";
 		
 		// JDBC driver name and database URL
 	   	final String JDBC_DRIVER = "com.mysql.jdbc.Driver";  
-	   	final String DB_URL = "jdbc:mysql://localhost:3306/oop";
+	   	final String DB_URL = "jdbc:mysql://localhost:3306/hotel";
 
 	   	//  Database credentials
 	   	final String USER = "root";
@@ -382,7 +383,7 @@ public class ConnectRoom
 	   	
 	   	try
 	   	{
-	    	Class.forName("com.mysql.jdbc.Driver");
+	    	Class.forName(JDBC_DRIVER);
 	      	conn = DriverManager.getConnection(DB_URL, USER, PASS);
 	      	stmt = conn.createStatement();
 	      
@@ -393,19 +394,14 @@ public class ConnectRoom
 	    	{
 				//Retrieve by column name
 
-				int day = rs.getInt("Day");
-			    int month = rs.getInt("Month");
-			    int year = rs.getInt("Year");
-				
-				double start = rs.getDouble("Start");
-				double end = rs.getDouble("End");
-				int hour = (int)start;
-				int min = (int) ((start-hour)*100);
+				Timestamp start = rs.getTimestamp("Start");
+				Timestamp end = rs.getTimestamp("End");
 			    
 			    AppNo = rs.getLong("AppNo");
 
-			    String y = Integer.toString(day)+"-"+Integer.toString(month)+"-"+Integer.toString(year)+" "+Integer.toString(hour)+":"+Integer.toString(min);
-			    return y;
+			    String startStr = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss").format(start);
+			    String endStr = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss").format(end);
+			    return startStr;
 	    	} 	
 	   	}
 
@@ -445,7 +441,7 @@ public class ConnectRoom
 	      	}//end finally try
 	   	}//end try
 		return result;  
-	}*/
+	}
 	
 	public String getreason(String sql)
 	{ 

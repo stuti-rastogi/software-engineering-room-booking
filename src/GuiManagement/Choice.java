@@ -29,7 +29,6 @@ public class Choice
 
 	public Choice(User user) 
 	{
-		// TODO Auto-generated constructor stub
 		initialize(user);
 	}
 
@@ -106,7 +105,7 @@ public class Choice
 		btnLogout.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) 
 			{
-				JOptionPane.showMessageDialog (null, "Logging out...", "logout", JOptionPane.INFORMATION_MESSAGE);
+				JOptionPane.showMessageDialog (null, "You are logged out.", "logout", JOptionPane.INFORMATION_MESSAGE);
 				EventQueue.invokeLater(new Runnable() {
 					public void run() 
 					{

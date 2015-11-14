@@ -77,7 +77,7 @@ public class Adminroom
 
 		ConnectRoom crc = new ConnectRoom();
 		String details = "SELECT * FROM `bookings` WHERE `Granted` = '0'";
-		String junk = crc.Search(details, 2,null);
+		String junk = crc.Search(details, 2, null);
 		
 		if(junk.matches("0"))
 		{
@@ -174,27 +174,28 @@ public class Adminroom
 					int ans=0;
 					ConnectRoom cr = new ConnectRoom();
 					String order = comboBox_1.getSelectedItem().toString();
+					
+					String inp = comboBox.getSelectedItem().toString();
+					String inpid = inp.substring(16, 18);
+					String rno = inp.substring(25, 29);
 					if(order.matches("Accept"))
 					{
 						ans = 1;
-						String inp = comboBox.getSelectedItem().toString();
-						String inpid = inp.substring(16, 18);
 						
 						String ordersql = "UPDATE `hotel`.`bookings` SET `Granted` = '"+ans+"', `Reason denied` = '"+textField.getText()+"' WHERE `room`.`AppNo` = '"+inpid+"';";
 						cr.Connection(ordersql);
 						
-						//String order2 = "UPDATE `hotel`.`rooms` SET `isBooked` = '1' WHERE `rooms`.`AppNo` = '"+inpid+"';";
+						String order2 = "UPDATE `hotel`.`rooms` SET `isBooked` = '1' WHERE `rooms`.`RoomNo` = '"+rno+"';";
+						cr.Connection(order2);
 					}
 					else
 					{
+						String ordersql = "UPDATE `hotel`.`bookings` SET `Granted` = '"+ans+"', `Reason denied` = '"+textField.getText()+"' WHERE `room`.`AppNo` = '"+inpid+"';";
+						
+						cr.Connection(ordersql);
 						ans = 2;
 					}
 						
-					String inp = comboBox.getSelectedItem().toString();
-					String inpid = inp.substring(16, 18);
-					String ordersql = "UPDATE `hotel`.`bookings` SET `Granted` = '"+ans+"', `Reason denied` = '"+textField.getText()+"' WHERE `room`.`AppNo` = '"+inpid+"';";
-					
-					cr.Connection(ordersql);
 					RoomResource ro;
 					try 
 					{
@@ -207,7 +208,6 @@ public class Adminroom
 					} 
 					catch (SQLException e1) 
 					{
-						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					}
 						

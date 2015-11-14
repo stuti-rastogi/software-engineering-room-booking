@@ -61,11 +61,13 @@ public class RoomDB //extends Room
     	return junk;
 	}
 	
-	public void cancelDB(int AppNo,User user) throws SQLException
+	public void cancelDB(int AppNo, String roomno, User user) throws SQLException
 	{	
 		ConnectRoom cr = new ConnectRoom();
-		String details = "DELETE FROM `oop`.`room` WHERE `room`.`AppNo` = "+AppNo;
+		String details = "DELETE FROM `hotel`.`bookings` WHERE `bookings`.`AppNo` = "+ AppNo;
 		cr.Connection(details);
+		String order = "UPDATE `hotel`.`rooms` SET `isBooked` = '0' WHERE `rooms`.`RoomNo` = '" + roomno + "';";
+		cr.Connection(order);
 	}
 	
 	public void decide(User user) throws SQLException

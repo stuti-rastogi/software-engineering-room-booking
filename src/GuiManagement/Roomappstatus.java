@@ -73,8 +73,8 @@ public class Roomappstatus
 		
 		try
 		{ 
-			RoomDB db1 = new RoomDB();
-			String junk = db1.checkDB(user);
+			RoomDB rodb = new RoomDB();
+			String junk = rodb.checkDB(user);
 			if(junk.matches("0"))
 			{
 				JLabel lblYourEarlierBookings = new JLabel("You do not have any bookings.");
@@ -90,7 +90,7 @@ public class Roomappstatus
 				frameRoomappstatus.getContentPane().add(lblOpenTheDrop);
 				
 				ConnectRoom cr = new ConnectRoom();
-				String sql = "SELECT * FROM `oop`.`room` WHERE `Student` = '"+user.name+"'";
+				String sql = "SELECT * FROM `hotel`.`bookings` WHERE `GuestName` = '"+user.name+"'";
 				String[] entries = cr.getOldEntries(sql);
 				int total=0;
 				
@@ -123,7 +123,6 @@ public class Roomappstatus
 		}
 		catch (SQLException e) 
 		{
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

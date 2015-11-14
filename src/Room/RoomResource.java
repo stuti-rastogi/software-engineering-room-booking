@@ -23,7 +23,7 @@ import Main.Resource;
 public class RoomResource extends Resource
 {
 	public String reason, roomno;
-	int roomtype;
+	public int roomtype;
 	public String reasondenied;
 	public Timestamp startTime, endTime;
 	public long appNo;
@@ -254,7 +254,8 @@ public class RoomResource extends Resource
 			int AppNo = scan.nextInt();
 			if(AppNo==0) 
 				return;
-			rodb.cancelDB(AppNo, user);
+			
+			rodb.cancelDB(AppNo, "", user);
 		}	
 	}	
 }
