@@ -1,3 +1,8 @@
+/**
+ * User class variables
+ * @author stutirastogi
+ * @date 11/6/15
+ */
 package Login;
 
 public class User

@@ -1,3 +1,8 @@
+/**
+ * Class for room booking screen for user
+ * @author stutirastogi
+ * @date 11/14/15
+ */
 package GuiManagement;
 
 import java.awt.EventQueue;
@@ -55,6 +60,7 @@ public class BookRoom
 	 */
 	private void initialize(final User user) 
 	{
+		//new main frame
 		frameBookroom = new JFrame();
 		frameBookroom.setBounds(100, 100, 450, 300);
 		frameBookroom.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -77,6 +83,9 @@ public class BookRoom
 		lblSelectDateOf.setBounds(10, 61, 219, 20);
 		frameBookroom.getContentPane().add(lblSelectDateOf);
 		
+		//Check in date and time
+		//Start date 11/21/15
+		//End date 11/21/16
 		final JSpinner spinner = new JSpinner();
 		spinner.setModel(new SpinnerDateModel(new Date(1448080200000L), new Date(1448080200000L), new Date(1479702600000L), Calendar.DAY_OF_MONTH));
 		spinner.setBounds(227, 61, 155, 20);
@@ -112,8 +121,9 @@ public class BookRoom
 					Calendar cal = Calendar.getInstance();
 					Calendar calnew = Calendar.getInstance();
 					cal.setTime(new Date());
-					cal.add(Calendar.DAY_OF_MONTH, 1);
+					cal.add(Calendar.DAY_OF_MONTH, 1);		//add one day
 			        
+					//get start timestamp from input
 			        String date = spinner.getValue().toString();
 			        SimpleDateFormat sdf = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
 			        Date dobook = sdf.parse(date);
@@ -121,6 +131,7 @@ public class BookRoom
 			        
 			        Timestamp startTime = new Timestamp(dobook.getTime());
 			        
+			        //get end timestamp from input
 			        String endDate = spinnerEnd.getValue().toString();
 			        SimpleDateFormat sdfEnd = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
 			        Date dobookEnd = sdf.parse(endDate);
@@ -139,7 +150,7 @@ public class BookRoom
 						ro.endTime = endTime;
 						
 						RoomDB rdb = new RoomDB();
-						String avail = rdb.roomCheck(ro);
+						String avail = rdb.roomCheck(ro);			//if available - room no. returned
 						
 						if(avail.matches("problem"))
 						{
@@ -218,7 +229,7 @@ public class BookRoom
 					{
 						ro.startTime = startTime;
 						ro.endTime = endTime;
-						Long diff = ro.endTime.getTime() - ro.startTime.getTime();
+						Long diff = ro.endTime.getTime() - ro.startTime.getTime();			//in miliseconds
 						if (ro.roomtype > 2)
 						{
 							//per hour basis
@@ -241,12 +252,12 @@ public class BookRoom
 						{
 							ro.roomno = avail;
 							ro.reason = formattedTextField.getText();
-							JOptionPane.showMessageDialog (null,"Selected room is available for mentioned duration", "Available", JOptionPane.INFORMATION_MESSAGE);
+							JOptionPane.showMessageDialog (null,"Selected room type is available for mentioned duration", "Available", JOptionPane.INFORMATION_MESSAGE);
 							int x =JOptionPane.showConfirmDialog(null, "Do you want to book room", "Confirm booking",JOptionPane.YES_NO_OPTION);
 							
 							if(x == JOptionPane.YES_OPTION)
 							{
-								rdb.queue(ro, user);
+								rdb.queue(ro, user);			//process application
 								JOptionPane.showMessageDialog (null,"Application received", "Successful", JOptionPane.INFORMATION_MESSAGE);
 								EventQueue.invokeLater(new Runnable() {
 									public void run() 
@@ -254,7 +265,7 @@ public class BookRoom
 										try 
 										{ 
 											frameBookroom.setVisible(false);
-											RoomChoice window = new RoomChoice(user);
+											RoomChoice window = new RoomChoice(user);		//Back to previous screen after completion
 											window.frameRoomChoice.setVisible(true);
 										} 
 										catch (Exception e) 

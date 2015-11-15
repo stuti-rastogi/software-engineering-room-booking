@@ -1,3 +1,8 @@
+/**
+ * Class for screen to cancel bookings
+ * @author stutirastogi
+ * @date 11/14/15
+ */
 package GuiManagement;
 
 import java.awt.EventQueue;
@@ -60,7 +65,7 @@ public class RoomCancel
 					{
 						try 
 						{	
-							RoomChoice window1 = new RoomChoice(user);
+							RoomChoice window1 = new RoomChoice(user);		//previous screen
 							window1.frameRoomChoice.setVisible(true);
 						} 
 						catch (Exception e) 
@@ -78,7 +83,7 @@ public class RoomCancel
 		try
 		{
 			RoomDB rodb = new RoomDB();
-			String junk = rodb.checkDB(user);
+			String junk = rodb.checkDB(user);		//check if no bookings of user
 			
 			if(junk.matches("0"))
 			{
@@ -93,6 +98,7 @@ public class RoomCancel
 				lblYourEarlierBookings.setBounds(10, 0, 152, 26);
 				frameRoomCancel.getContentPane().add(lblYourEarlierBookings);
 				
+				//get list of bookings and display in drop down menu
 				ConnectRoom cr = new ConnectRoom();
 				String sql = "SELECT * FROM `hotel`.`bookings` WHERE `GuestName` = '"+user.name+"'";
 				String[] entries = cr.getOldEntries(sql);
@@ -163,7 +169,7 @@ public class RoomCancel
 											try 
 											{
 												frameRoomCancel.setVisible(false);
-												RoomChoice window1 = new RoomChoice(user);
+												RoomChoice window1 = new RoomChoice(user);		//previous screen after cancel successful
 												window1.frameRoomChoice.setVisible(true);
 											} 
 											catch (Exception e) 

@@ -1,3 +1,8 @@
+/**
+ * Class for Room booking or logout screen
+ * @author stutirastogi
+ * @date 11/14/15
+ */
 package GuiManagement;
 
 import java.awt.EventQueue;
@@ -47,6 +52,7 @@ public class Choice
 		lblWelcomeUser.setBounds(39, 11, 200, 30);
 		frameChoice.getContentPane().add(lblWelcomeUser);
 		
+		//giving the choices
 		JLabel lblWhatWouldYou = new JLabel("What would you like to do?");
 		lblWhatWouldYou.setBounds(99, 52, 244, 30);
 		frameChoice.getContentPane().add(lblWhatWouldYou);
@@ -61,7 +67,7 @@ public class Choice
 						try 
 						{ 
 							frameChoice.setVisible(false);
-							RoomChoice window = new RoomChoice(user);
+							RoomChoice window = new RoomChoice(user);			//room choice screen
 							window.frameRoomChoice.setVisible(true);
 						} 
 						catch (Exception e) 
@@ -87,7 +93,7 @@ public class Choice
 						try 
 						{
 							frameChoice.setVisible(false);
-							Login window = new Login();
+							Login window = new Login();				//back to login screen on log out
 							window.frameLogin.setVisible(true);
 						} 
 						catch (Exception e) 
@@ -107,11 +113,10 @@ public class Choice
 		lblYourDues.setBounds(223, 19, 140, 14);
 		frameChoice.getContentPane().add(lblYourDues);
 		
+		//display dues at the top
 		String query1 = "SELECT * FROM `user` WHERE `Name` = '"+user.name+"'";
 		ConnectRoom cr = new ConnectRoom();
 		int dues = cr.getdues(query1);
-		//System.out.println("Dues query: " + query1);
-		System.out.println(dues);
 		
 		JLabel label = new JLabel(Integer.toString(dues));
 		label.setBounds(378, 19, 46, 14);

@@ -1,3 +1,8 @@
+/**
+ * Class to send confirmation emails
+ * @author stutirastogi
+ * @date 11/14/15
+ */
 package Email;
 import java.util.Properties;
 
@@ -12,16 +17,22 @@ import javax.swing.JOptionPane;
 
 public class SendEmail 
 {
+	/**
+	 * method that sends confirmation e-mail
+	 * @param email email address of user to send mail to
+	 * @param body body of the message
+	 * @param head subject header of the email
+	 */
     public static void mail(String email,String body,String head) 
     {
         // Recipient's email ID needs to be mentioned.
-        //String to = "mastershifu6@gmail.com";     //change accordingly
+        String to = "stuti.r.rastogi@gmail.com";     //change accordingly
 
         // Sender's email ID needs to be mentioned
-        String from = "group18oop@gmail.com";       //change accordingly
+        String from = "johnsmith.m0802@gmail.com";       //change accordingly
         
-        final String username = "group18oop";       //change accordingly
-        final String password = "groupoop18";       //change accordingly
+        final String username = "johnsmith.m0802";       //change accordingly
+        final String password = "doctorwho0802";       //change accordingly
 
         // Assuming you are sending email through relay.jangosmtp.net
         String host = "smtp.gmail.com";
@@ -51,8 +62,7 @@ public class SendEmail
             message.setFrom(new InternetAddress(from));
 
             // Set To: header field of the header.
-            message.setRecipients(Message.RecipientType.TO,
-            InternetAddress.parse(email));
+            message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(email));
 
             // Set Subject: header field
             message.setSubject(head);

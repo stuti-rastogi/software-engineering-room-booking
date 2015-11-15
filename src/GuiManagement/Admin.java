@@ -1,4 +1,9 @@
- package GuiManagement;
+/**
+ * Class that shows the first screen when admin logs in
+ * @author stutirastogi
+ * @date 11/14/15
+ */
+package GuiManagement;
 
 import java.awt.EventQueue;
 
@@ -34,13 +39,15 @@ public class Admin
 	 */
 	private void initialize(final User user) 
 	{
+		//main frame
 		frameAdmin = new JFrame();
 		frameAdmin.setBounds(100, 100, 450, 300);
 		frameAdmin.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frameAdmin.getContentPane().setLayout(null);
 		
+		//welcome message
 		JLabel lblWelcomeAdmin = new JLabel("Welcome "+user.name);
-		lblWelcomeAdmin.setBounds(24, 23, 105, 34);
+		lblWelcomeAdmin.setBounds(24, 23, 125, 34);
 		frameAdmin.getContentPane().add(lblWelcomeAdmin);
 		
 		JLabel lblWhatDoYou = new JLabel("Click below to handle bookings");
@@ -57,7 +64,7 @@ public class Admin
 						try 
 						{ 
 							frameAdmin.setVisible(false);
-							Adminroom window = new Adminroom(user);
+							Adminroom window = new Adminroom(user);			//call room approval for admin
 							window.frameAdminroom.setVisible(true);
 						} 
 						catch (Exception e) 
@@ -71,6 +78,7 @@ public class Admin
 		btnRoom.setBounds(163, 158, 89, 23);
 		frameAdmin.getContentPane().add(btnRoom);
 		
+		//logout button
 		JButton btnLogout = new JButton("Logout");
 		btnLogout.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) 
@@ -82,7 +90,7 @@ public class Admin
 						try 
 						{
 							frameAdmin.setVisible(false);
-							Login window = new Login();
+							Login window = new Login();					//send back to login screen after logout
 							window.frameLogin.setVisible(true);
 						} 
 						catch (Exception e) 

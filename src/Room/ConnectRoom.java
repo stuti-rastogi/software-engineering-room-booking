@@ -1,7 +1,7 @@
 /**
  * Class dealing with the room table of the database
  * @author stutirastogi
- * @date 11/06/15
+ * @date 11/7/15
  */
 package Room;
 
@@ -18,6 +18,10 @@ import Email.SendEmail;
 
 public class ConnectRoom 
 {
+	/**
+	 * Method that connects to db and executes given query
+	 * @param sql The query to be executed
+	 */
 	public void Connection(String sql)
 	{
 			
@@ -79,6 +83,13 @@ public class ConnectRoom
 		   }//end try		   
 	}
 	
+	/**
+	 * Method that performs booking related operations in db
+	 * @param sql Query to be executed
+	 * @param operation Integer denoting operation to be performed
+	 * @param ro The RoomResource object
+	 * @return String that could be problem, or room no. in case of checking availability
+	 */
 	public String Search(String sql, int operation, RoomResource ro)
 	{ 
 		//operation 1 for checking availability
@@ -108,7 +119,7 @@ public class ConnectRoom
 				stmt = conn.createStatement();
 			    
 			    ResultSet rs = stmt.executeQuery(sql);
-			    ArrayList<String> roomsToCheck = new ArrayList<String>();
+			    ArrayList<String> roomsToCheck = new ArrayList<String>();		//all rooms returned full - check their timings
 			    
 			    while(rs.next())
 			    {
@@ -132,6 +143,7 @@ public class ConnectRoom
 				    	Timestamp checkin = rsBookings.getTimestamp("Start");
 				    	Timestamp checkout = rsBookings.getTimestamp("End");
 				    	
+				    	//check if any clashes of booking times
 				    	if (ro.startTime.after(checkin) && ro.startTime.before(checkin))
 				    		continue;
 				    	else if (ro.startTime.before(checkin) && (ro.endTime.after(checkin) && ro.endTime.before(checkout)))
@@ -161,17 +173,17 @@ public class ConnectRoom
 				    String roomno  = rs.getString("RoomNo");
 				    AppNo = rs.getLong("AppNo");
 				    
-					//room admin
+					//room admin - show details
 					if(granted == 0)
 		        	{
-		        		System.out.println("Application No. "+AppNo+" Room "+roomno+" is queued");
+		        		System.out.println("Application No. "+ AppNo +" Room "+ roomno +" is queued");
 		        	}
 		        	else if(granted == 1)
 		        	{
-		        		System.out.println("Application No. "+AppNo+" Room "+roomno+" is  booked");
+		        		System.out.println("Application No. "+ AppNo +" Room "+ roomno +" is  booked");
 		        	}
 		        	else 
-		        		System.out.println("Permission for Room "+roomno+" was denied because "+reasondenied);
+		        		System.out.println("Permission for Room "+ roomno +" was denied because "+ reasondenied);
 		        	continue;
 			    }  
 			}
@@ -260,13 +272,15 @@ public class ConnectRoom
 		}	   
 	}
 	
-	
+	/**
+	 * Method to get all bookings of a user in particular format
+	 * @param sql Query to be executed
+	 * @return Array of all bookings
+	 */
 	public String[] getOldEntries(String sql)
-	{ 
-		//operation 3 to send mail and operation 1 for checking availability
-		
+	{		
 		int count=0;
-		String[] results = new String[100];
+		String[] results = new String[100];		//to be returned
 		
 		// JDBC driver name and database URL
 		
@@ -292,6 +306,7 @@ public class ConnectRoom
 		      
 			while(rs.next())
 			{
+		        //Retrieve by column name
 		    	int granted = rs.getInt("Granted");
 			    String reasondenied = rs.getString("ReasonDenied");
 			    String roomtype  = rs.getString("RoomType");
@@ -300,7 +315,6 @@ public class ConnectRoom
 			    Timestamp end = rs.getTimestamp("End");
 			    AppNo = rs.getLong("AppNo");
 			    String email = rs.getString("Email");
-		        //Retrieved by column name
 		          
 		        if(granted==0)
 		        {
@@ -365,6 +379,11 @@ public class ConnectRoom
 		return results;	   
 	}
 	
+	/**
+	 * Method to get booking date as string
+	 * @param sql Query to be executed
+	 * @return
+	 */
 	public String getDate(String sql)
 	{   	
 		//0 = update, 1 = execute
@@ -399,7 +418,7 @@ public class ConnectRoom
 			    
 			    AppNo = rs.getLong("AppNo");
 
-			    String startStr = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss").format(start);
+			    String startStr = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss").format(start);		//convert timestamp to string
 			    String endStr = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss").format(end);
 			    return startStr;
 	    	} 	
@@ -443,15 +462,16 @@ public class ConnectRoom
 		return result;  
 	}
 	
+	/**
+	 * Method to get reason of booking
+	 * @param sql query to be executed
+	 * @return the reason or no if no reason
+	 */
 	public String getreason(String sql)
 	{ 
-		//operation 3 to send mail and operation 1 for checking availability
-		int count=0;
-		String[] results = new String[100];
-		
 		// JDBC driver name and database URL
 		final String JDBC_DRIVER = "com.mysql.jdbc.Driver";  
-		final String DB_URL = "jdbc:mysql://localhost:3306/oop";
+		final String DB_URL = "jdbc:mysql://localhost:3306/hotel";
 
 		//  Database credentials
 		final String USER = "root";
@@ -462,7 +482,7 @@ public class ConnectRoom
 		long AppNo = 0;
 		try
 		{
-			Class.forName("com.mysql.jdbc.Driver");
+			Class.forName(JDBC_DRIVER);
 			conn = DriverManager.getConnection(DB_URL, USER, PASS);
 
 		    stmt = conn.createStatement();
@@ -515,12 +535,19 @@ public class ConnectRoom
 		return "no";	   
 	}
 	
+	/**
+	 * Method to calculate payments and amounts
+	 * @param sql Query to be executed
+	 * @param roomType Integer representing type of room
+	 * @param operation Integer representing operation to be performed
+	 * @return
+	 */
 	public int costCalc(String sql, int roomType, int operation)
 	{ 
 		//0 = for total calculation and 
-		//1 = getting loan amount and 
+		//1 = getting amount and 
 		//2 = getting amount to be refunded
-		//String result="";
+
 		// JDBC driver name and database URL
 		
 		int cost = 0;
@@ -541,23 +568,21 @@ public class ConnectRoom
 			stmt = conn.createStatement();
 
 			ResultSet rs = stmt.executeQuery(sql);
-			System.out.println("Is empty? " + rs.isBeforeFirst());
 			
 			while(rs.next())
 			{
-				//Retrieve by column name
 			    if(operation == 0)
 			    {
-			    	cost = rs.getInt("UnitCost");
-			    	System.out.println("Cost: " + cost);
+			    	cost = rs.getInt("UnitCost");		//tariff for one unit hour/day
 			    }
 			    	
 			    else if(operation == 1)
-			    	cost = rs.getInt("SUM(Amount)");
+			    {
+			    	cost = rs.getInt("SUM(Amount)");	//current amount of guest
+			    }
 			    else if(operation == 2)
 			    {
-			    	cost = rs.getInt("Bill");
-			    	System.out.println("CostRefund: " + cost);
+			    	cost = rs.getInt("Bill");			//cost of booking that needs to be refunded
 			    }
 			    
 			    return cost;
@@ -605,12 +630,13 @@ public class ConnectRoom
 		return cost;	   
 	}
 	
+	/**
+	 * Method to get amount due of a guest based on query
+	 * @param sql Query to be executed
+	 * @return integer that is the due amount
+	 */
 	public int getdues(String sql)
-	{ 
-		//operation 3 to send mail and operation 1 for checking availability
-		int count=0;
-		String[] results = new String[100];
-		
+	{ 	
 		// JDBC driver name and database URL
 		final String JDBC_DRIVER = "com.mysql.jdbc.Driver";  
 		final String DB_URL = "jdbc:mysql://localhost:3306/hotel";
@@ -633,7 +659,6 @@ public class ConnectRoom
 		    while(rs.next())
 		    {
 		         int due = rs.getInt("Amount");
-		         System.out.println("DUE: " + due);
 		         return due;
 		    }
 		    

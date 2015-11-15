@@ -1,3 +1,6 @@
+/**
+ * Class for a screen displaying all choices about rooms
+ */
 package GuiManagement;
 
 import java.awt.EventQueue;
@@ -51,7 +54,7 @@ public class RoomChoice
 						try 
 						{
 							frameRoomChoice.setVisible(false);
-							BookRoom window = new BookRoom(user);
+							BookRoom window = new BookRoom(user);		//for new boking
 							window.frameBookroom.setVisible(true);
 						} 
 						catch (Exception e) 
@@ -76,7 +79,7 @@ public class RoomChoice
 						try 
 						{
 							frameRoomChoice.setVisible(false);
-							Roomappstatus window = new Roomappstatus(user);
+							Roomappstatus window = new Roomappstatus(user);		//to check application status
 							window.frameRoomappstatus.setVisible(true);
 						} 
 						catch (Exception e) 
@@ -101,7 +104,7 @@ public class RoomChoice
 						try 
 						{
 							frameRoomChoice.setVisible(false);
-							RoomCancel window = new RoomCancel(user);
+							RoomCancel window = new RoomCancel(user);		//to cancel any booking
 							window.frameRoomCancel.setVisible(true);
 						} 
 						catch (Exception e) 
@@ -125,7 +128,7 @@ public class RoomChoice
 						try 
 						{	
 							frameRoomChoice.setVisible(false);
-							Choice window = new Choice(user);
+							Choice window = new Choice(user);		//previous screen
 							window.frameChoice.setVisible(true);
 							
 						} 

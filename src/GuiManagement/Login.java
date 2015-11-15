@@ -1,3 +1,8 @@
+/**
+ * Class for login screen
+ * @author stutirastogi
+ * @date 11/14/15
+ */
 package GuiManagement;
 import Login.*;
 
@@ -70,6 +75,7 @@ public class Login
 		lblUserName.setBounds(74, 88, 90, 23);
 		frameLogin.getContentPane().add(lblUserName);
 		
+		//for username
 		textField = new JTextField();
 		textField.setBounds(163, 89, 86, 20);
 		frameLogin.getContentPane().add(textField);
@@ -79,6 +85,7 @@ public class Login
 		lblPassword.setBounds(74, 138, 65, 14);
 		frameLogin.getContentPane().add(lblPassword);
 		
+		//for password
 		passwordField = new JPasswordField();
 		passwordField.setBounds(163, 135, 86, 20);
 		frameLogin.getContentPane().add(passwordField);
@@ -98,8 +105,8 @@ public class Login
 				UserDB udb = new UserDB();
 				try 
 				{
-					String ans = udb.UserDBVerify(username, passwd);
-					String adm = ans.substring(0,1);
+					String ans = udb.UserDBVerify(username, passwd);		//get login verification
+					String adm = ans.substring(0,1);	//first character gives admin or not
 					System.out.println(ans);
 					if (ans.matches("0Successful")|| ans.matches("1Successful"))
 					{
@@ -113,7 +120,7 @@ public class Login
 									try 
 									{
 										frameLogin.setVisible(false);
-										Admin window = new Admin(user);
+										Admin window = new Admin(user);			//admin operations screen
 										window.frameAdmin.setVisible(true);
 									} 
 									catch (Exception e) 
@@ -134,7 +141,7 @@ public class Login
 								{
 									try 
 									{
-										Choice window = new Choice(user);
+										Choice window = new Choice(user);		//user operations screen
 										window.frameChoice.setVisible(true);
 										
 									} 

@@ -1,3 +1,8 @@
+/**
+ * Class for screen to check application status of room booking
+ * @author stutirastogi
+ * @date 11/14/15
+ */
 package GuiManagement;
 
 import java.awt.EventQueue;
@@ -55,7 +60,7 @@ public class Roomappstatus
 					try 
 					{ 
 						frameRoomappstatus.setVisible(false);
-						RoomChoice window = new RoomChoice(user);
+						RoomChoice window = new RoomChoice(user);		//previous screen
 						window.frameRoomChoice.setVisible(true);
 					} 
 					catch (Exception e) 
@@ -74,7 +79,7 @@ public class Roomappstatus
 		try
 		{ 
 			RoomDB rodb = new RoomDB();
-			String junk = rodb.checkDB(user);
+			String junk = rodb.checkDB(user);		//checks if no bookings of this user
 			if(junk.matches("0"))
 			{
 				JLabel lblYourEarlierBookings = new JLabel("You do not have any bookings.");
@@ -89,6 +94,7 @@ public class Roomappstatus
 				lblOpenTheDrop.setBounds(31, 29, 393, 14);
 				frameRoomappstatus.getContentPane().add(lblOpenTheDrop);
 				
+				//find bookings of this user and display
 				ConnectRoom cr = new ConnectRoom();
 				String sql = "SELECT * FROM `hotel`.`bookings` WHERE `GuestName` = '"+user.name+"'";
 				String[] entries = cr.getOldEntries(sql);

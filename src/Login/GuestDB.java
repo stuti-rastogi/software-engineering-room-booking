@@ -1,3 +1,8 @@
+/**
+ * A class to create user object
+ * @author stutirastogi
+ * @date 11/6/15
+ */
 package Login;
 
 public class GuestDB
@@ -13,6 +18,7 @@ public class GuestDB
 	
 	public User isVerified()
 	{
+		//all user fields set
 		User user = new User();
 		user.name = dbname;
 		user.id = dbid;

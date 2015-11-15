@@ -1,3 +1,8 @@
+/**
+ * Class that verifies user login
+ * @author stutirastogi
+ * @date 11/6/15
+ */
 package Login;
 	
 import java.sql.*;	
@@ -10,13 +15,19 @@ public class UserDB
     Connection con;
     Statement stmt;
     int cnt;
-
 	
+    /**
+     * A method to verify login details of user
+     * @param usr username
+     * @param pwd password
+     * @return admin status and success of login
+     * @throws SQLException
+     */
 	public String UserDBVerify(String usr, String pwd) throws SQLException
 	{	
 		Connect conn = new Connect();
-		String sql = "SELECT * FROM `user` WHERE `Username` = '"+usr+"' AND `Password` = '"+pwd+"'";
-		//System.out.println(sql);
+		String sql = "SELECT * FROM `user` WHERE `Username` = '"+usr+"' AND `Password` = '"+pwd+"'";	//query to get user details
+		
 		String result = conn.Connection(sql);
 		System.out.println("USER " + result);
 
@@ -32,8 +43,8 @@ public class UserDB
 			String contactlength = result.substring(1, 3);
 			int conlength = Integer.parseInt(contactlength);
 			
-			dbid = result.substring(3, 8);							//ID
-			xpwd = result.substring(8, 14);						//password - 6 characters only			
+			dbid = result.substring(3, 8);			//guest id
+			xpwd = result.substring(8, 14);			//password - 6 characters only			
 			xcontact = result.substring(14, 14 + conlength);		//contact
 			dbname = result.substring(14 + conlength);				//name
 			
@@ -46,6 +57,10 @@ public class UserDB
 		}
 	}
 	
+	/**
+	 * create user object for verified user
+	 * @return user object created
+	 */
 	public User isVerified()
 	{
 		User user = new User();
@@ -54,6 +69,7 @@ public class UserDB
 		if(user.name==null)
 			System.exit(0);
 		
+		//set fields of user
 		user.id = dbid;
 		user.contact=xcontact;
 		user.usr = xusr;

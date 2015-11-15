@@ -1,6 +1,7 @@
 /**
  * Class to check availability, queue room requests
  * @author stutirastogi
+ * @date 11/7/15
  */
 package Room;
 import java.sql.*;
@@ -20,20 +21,30 @@ public class RoomDB //extends Room
 
     }
 
+    /**
+     * Method to check availability of room
+     * @param ro The RoomResource object having roomtype
+     * @return problem if not available, and room no. if available
+     * @throws SQLException
+     */
 	public String roomCheck(RoomResource ro) throws SQLException
 	{	
 		String type;
 		ConnectRoom crc = new ConnectRoom();
 		
 		String details = "SELECT * FROM `rooms` WHERE `RoomType` = '" + ro.roomtype + "'";
-		String result = crc.Search(details, 1, ro); //operation 1 for checking availability
-        //System.out.println(result);
+		String result = crc.Search(details, 1, ro); 	//operation 1 for checking availability
         return result;
 	}
 	
+	/**
+	 * Method to handle booking request
+	 * @param ro The roomresource object associated with booking
+	 * @param user The user object associated with booking
+	 * @throws SQLException
+	 */
 	public void queue(RoomResource ro, User user) throws SQLException
 	{	
-		
 		Dues dues = new Dues();
 		ConnectRoom cr = new ConnectRoom();
 		String details, change;
@@ -47,18 +58,23 @@ public class RoomDB //extends Room
 		{
 			//rooms are immediately granted
 			ro.bill = dues.calculate(user, ro.roomtype, ro.duration);
-			System.out.println("Duration: " + ro.duration);
-			dues.collect(user, ro.bill);
+			dues.collect(user, ro.bill);		//update due amount of guest
+			
 			details = "INSERT INTO `hotel`.`bookings` (`RoomNo`, `RoomType`, `GuestName`, `GuestID`, `Start`, `End`, `Reason`, `Bill`, `Granted`, `Email`) VALUES ('"+ro.roomno+"', '"+ro.roomtype+"', '"+user.name+"', '"+user.id+"', '"+ro.startTime+"', '"+ro.endTime+"', '"+ro.reason+"', '"+ro.bill+"', '1', '"+user.contact+"');";
 			change = "UPDATE `hotel`.`rooms` SET `isBooked` = '1' WHERE `rooms`.`RoomNo` = '"+ro.roomno+"'";
-			System.out.println(details);
-			System.out.println(change);
+
 			cr.Connection(details);
 			cr.Connection(change);
 
 		}
 	}
 
+	/**
+	 * Method that checks bookings of a user
+	 * @param user The user object whose bookings need to be fetched
+	 * @return 0 if no entries
+	 * @throws SQLException
+	 */
 	public String checkDB(User user) throws SQLException
 	{	
 		RoomResource ro = new RoomResource();
@@ -69,18 +85,31 @@ public class RoomDB //extends Room
     	return junk;
 	}
 	
+	/**
+	 * Method to handle cancellation of bookings
+	 * @param AppNo The application no. of booking to be cancelled
+	 * @param roomno The room no. allotted to be freed
+	 * @param user The user associated with cancelling
+	 * @throws SQLException
+	 */
 	public void cancelDB(int AppNo, String roomno, User user) throws SQLException
 	{	
 		Dues dues = new Dues();
 		dues.refund(user, AppNo);
 		ConnectRoom cr = new ConnectRoom();
+		
 		String details = "DELETE FROM `hotel`.`bookings` WHERE `bookings`.`AppNo` = "+ AppNo;
 		cr.Connection(details);
+		
 		String order = "UPDATE `hotel`.`rooms` SET `isBooked` = '0' WHERE `rooms`.`RoomNo` = '" + roomno + "';";
 		cr.Connection(order);
 	}
 	
-	public void decide(User user) throws SQLException
+	/**
+	 * Method to handle admin actions of approving/denying requests
+	 * @throws SQLException
+	 */
+	public void decide() throws SQLException
 	{	
 		String contin = "y";
 		while(contin.matches("y"))

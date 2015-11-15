@@ -1,3 +1,8 @@
+/**
+ * Class for in line main screen options
+ * @author stutirastogi
+ * @date 11/6/15
+ */
 package Main;
 
 import Login.*;
@@ -27,6 +32,12 @@ public class Resource
 		
 	}
 	
+	/**
+	 * Method to take inline inputs
+	 * @param user User object executing this
+	 * @throws SQLException
+	 * @throws ParseException
+	 */
 	public void ResourceInp(User user) throws SQLException, ParseException
 	{	
 		System.out.println("Welcome "+user.name);
@@ -41,12 +52,12 @@ public class Resource
 		{	//System.out.println(user.admin);
 			if(user.admin == true)
 			{
-				roomA = new RoomA();
+				roomA = new RoomA();		//admin room options asked next
 				roomA.admin(user);
 			}
 			else
 			{//System.out.println(user.admin);
-				roomU = new RoomResource();
+				roomU = new RoomResource();		//user room options asked next
 				roomU.Choices(user);
 			}
 		}

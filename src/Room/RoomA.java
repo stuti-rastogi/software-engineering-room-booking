@@ -1,6 +1,7 @@
 /**
- * Class for admin to manage room
+ * Class for admin to manage room inline
  * @author stutirastogi
+ * @date 11/7/15
  */
 package Room;
 import java.sql.SQLException;
@@ -22,6 +23,6 @@ public class RoomA extends Resource
 		System.out.println("Welcome "+ user.name);
 		RoomResource ro = new RoomResource();
 		RoomDB rodb = new RoomDB();
-		rodb.decide(user);		
+		rodb.decide();		
 	}
 }

@@ -1,3 +1,8 @@
+/**
+ * Class that handles room approval screen for admin
+ * @author stutirastogi
+ * @date 11/14/15
+ */
 package GuiManagement;
 
 import java.awt.EventQueue;
@@ -45,6 +50,7 @@ public class Adminroom
 	 */
 	private void initialize(final User user) 
 	{
+		//new main frame
 		frameAdminroom = new JFrame();
 		frameAdminroom.setBounds(100, 100, 450, 300);
 		frameAdminroom.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -60,7 +66,7 @@ public class Adminroom
 						try 
 						{ 
 							frameAdminroom.setVisible(false);
-							Admin window = new Admin(user);
+							Admin window = new Admin(user);			//show main admin screen which was previous menu
 							window.frameAdmin.setVisible(true);
 						} 
 						catch (Exception e) 
@@ -75,12 +81,14 @@ public class Adminroom
 		btnReturnToPrevious.setBounds(63, 214, 167, 23);
 		frameAdminroom.getContentPane().add(btnReturnToPrevious);
 
+		//check if there are any ungranted requests
 		ConnectRoom crc = new ConnectRoom();
 		String details = "SELECT * FROM `bookings` WHERE `Granted` = '0'";
 		String junk = crc.Search(details, 2, null);
 		
 		if(junk.matches("0"))
 		{
+			//no queued requests
 			JLabel lblYourEarlierBookings = new JLabel("You do not have any applications pending .");
 			lblYourEarlierBookings.setFont(new Font("Tahoma", Font.BOLD, 18));
 			lblYourEarlierBookings.setBounds(58, 75, 302, 62);
@@ -88,7 +96,8 @@ public class Adminroom
 		}
 		
 		else
-		{	
+		{
+			//drop down menu for the requests
 			final JLabel lblNewLabel = new JLabel("");
 			lblNewLabel.setBounds(223, 70, 186, 44);
 			frameAdminroom.getContentPane().add(lblNewLabel);
@@ -97,7 +106,8 @@ public class Adminroom
 			comboBox_1.setModel(new DefaultComboBoxModel(new String[] {"Accept", "Deny"}));
 			comboBox_1.setBounds(223, 133, 87, 20);
 			frameAdminroom.getContentPane().add(comboBox_1);
-				
+			
+			//not needed always - can remove (discuss with designers)
 			JLabel lblReasonGivenBy = new JLabel("Reason given by applicant");
 			lblReasonGivenBy.setBounds(20, 79, 195, 14);
 			frameAdminroom.getContentPane().add(lblReasonGivenBy);
@@ -149,8 +159,8 @@ public class Adminroom
 				
 				public void popupMenuWillBecomeInvisible(PopupMenuEvent arg0) 
 				{
-					String inp = comboBox.getSelectedItem().toString();
-					String inpid = inp.substring(16, 18);
+					String inp = comboBox.getSelectedItem().toString();		//string from drop down menu
+					String inpid = inp.substring(16, 18);			//application no.
 					String sql = "SELECT * FROM `hotel`.`bookings` WHERE `bookings`.`AppNo` = "+inpid;
 					ConnectRoom cr = new ConnectRoom();
 					lblNewLabel.setText(cr.getreason(sql));					
@@ -176,31 +186,35 @@ public class Adminroom
 					String order = comboBox_1.getSelectedItem().toString();
 					
 					String inp = comboBox.getSelectedItem().toString();
-					String inpid = inp.substring(16, 18);
-					String rno = inp.substring(25, 29);
+					String inpid = inp.substring(16, 18);			//application no.
+					String rno = inp.substring(25, 29);				//room no.
 					if(order.matches("Accept"))
 					{
+						//admin approved
 						ans = 1;
 						
+						//change granted of booking
 						String ordersql = "UPDATE `hotel`.`bookings` SET `Granted` = '"+ans+"', `ReasonDenied` = '"+textField.getText()+"' WHERE `bookings`.`AppNo` = '"+inpid+"';";
 						cr.Connection(ordersql);
 						
+						//change the booked status of room
 						String order2 = "UPDATE `hotel`.`rooms` SET `isBooked` = '1' WHERE `rooms`.`RoomNo` = '"+rno+"';";
-						cr.Connection(order2);
-						
-						
+						cr.Connection(order2);	
 					}
 					else
 					{
+						ans = 0;
+						//granted should be 0
 						String ordersql = "UPDATE `hotel`.`bookings` SET `Granted` = '"+ans+"', `Reason denied` = '"+textField.getText()+"' WHERE `room`.`AppNo` = '"+inpid+"';";
 						
+						//execute query
 						cr.Connection(ordersql);
-						ans = 2;
 					}
 						
 					RoomResource ro;
 					try 
 					{
+						//to send email
 						ro = new RoomResource();
 						ro.AppNo = Integer.parseInt(inpid);
 						ro.reasondenied = textField.getText();
@@ -220,7 +234,7 @@ public class Adminroom
 							try 
 							{
 								frameAdminroom.setVisible(false);
-								Admin window = new Admin(user);
+								Admin window = new Admin(user);				//previous screen
 								window.frameAdmin.setVisible(true);
 							} 
 							catch (Exception e) 
