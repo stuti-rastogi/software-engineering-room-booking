@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Nov 14, 2015 at 07:54 PM
+-- Generation Time: Nov 19, 2015 at 10:55 AM
 -- Server version: 5.6.26
 -- PHP Version: 5.6.12
 
@@ -40,7 +40,7 @@ CREATE TABLE IF NOT EXISTS `bookings` (
   `Timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `ReasonDenied` varchar(100) CHARACTER SET latin1 DEFAULT NULL COMMENT 'Mentioned only in case of denied',
   `Email` varchar(40) CHARACTER SET latin1 NOT NULL COMMENT 'Email ID of guest'
-) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=latin1 COLLATE=latin1_spanish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=latin1 COLLATE=latin1_spanish_ci;
 
 -- --------------------------------------------------------
 
@@ -126,7 +126,7 @@ CREATE TABLE IF NOT EXISTS `user` (
 INSERT INTO `user` (`Name`, `Username`, `ID`, `Contact`, `Password`, `IsAdmin`, `Amount`) VALUES
 ('Rahul Malhotra', 'rahul', 'b0101', 'stuti.r.rastogi@gmail.com', 'rm0101', 0, 0),
 ('Rachit Rastogi', 'rrast', 'm0608', 'stuti.r.rastogi@gmail.com', 'rr0608', 0, 1000),
-('Stuti Rastogi', 'stuti', 'm0802', 'stuti.r.rastogi@gmail.com', 'sr0802', 0, 4000),
+('Stuti Rastogi', 'stuti', 'm0802', 'stuti.r.rastogi@gmail.com', 'sr0802', 0, 6000),
 ('John Smith', 'johns', 'm1804', 'johnsmith.m0802@gmail.com', 'js221b', 1, 0);
 
 --
@@ -161,7 +161,7 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT for table `bookings`
 --
 ALTER TABLE `bookings`
-  MODIFY `AppNo` int(20) unsigned NOT NULL AUTO_INCREMENT COMMENT 'Application number',AUTO_INCREMENT=17;
+  MODIFY `AppNo` int(20) unsigned NOT NULL AUTO_INCREMENT COMMENT 'Application number',AUTO_INCREMENT=10;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
