@@ -1,5 +1,9 @@
 # software-engineering-room-booking
+
 A project to build a hotel room booking system using Java and SQL by applying software engineering practices
+The project has functionalities for user login, different types of room booking, room cancellation, checking application status, admin login and admin approving/denying booking for conference room/banquet halls.
+
+For information about classes and methods, index.html doc file that has been provided.
 
 The team of this project is as follows:
 

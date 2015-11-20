@@ -318,7 +318,7 @@ public class ConnectRoom
 		          
 		        if(granted==0)
 		        {
-		        	results[count]=("Application No. " + AppNo + ", Room " + roomno + " is queued");
+		        	results[count]=("Application No. " + AppNo + ", Room " + roomno + " is queued/denied");
 		        }
 		        else if(granted==1)
 		        {

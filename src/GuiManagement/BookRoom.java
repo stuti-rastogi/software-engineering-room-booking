@@ -141,7 +141,13 @@ public class BookRoom
 					if(calnew.compareTo(cal) < 0)
 					{ 
 						//checks whether cal>calnew
-						JOptionPane.showMessageDialog(null, "You  have book room atleast 1 day earlier....", "Error", JOptionPane.ERROR_MESSAGE);
+						JOptionPane.showMessageDialog(null, "You  have to book room atleast 1 day earlier....", "Error", JOptionPane.ERROR_MESSAGE);
+					}
+					
+					if(dobookEnd.compareTo(dobook) < 0)
+					{
+						//end date not after start date
+						JOptionPane.showMessageDialog(null, "You  have to enter end date after start date", "Error", JOptionPane.ERROR_MESSAGE);
 					}
 					
 					else
@@ -225,6 +231,13 @@ public class BookRoom
 						//checks whether cal>calnew
 						JOptionPane.showMessageDialog(null, "You  have book room atleast 1 day earlier....", "Error", JOptionPane.ERROR_MESSAGE);
 					}
+					
+					if(dobookEnd.compareTo(dobook) < 0)
+					{
+						//end date not after start date
+						JOptionPane.showMessageDialog(null, "You  have to enter end date after start date", "Error", JOptionPane.ERROR_MESSAGE);
+					}
+					
 					else
 					{
 						ro.startTime = startTime;

@@ -205,10 +205,14 @@ public class Adminroom
 					{
 						ans = 0;
 						//granted should be 0
-						String ordersql = "UPDATE `hotel`.`bookings` SET `Granted` = '"+ans+"', `Reason denied` = '"+textField.getText()+"' WHERE `room`.`AppNo` = '"+inpid+"';";
+						String ordersql = "UPDATE `hotel`.`bookings` SET `Granted` = '"+ans+"', `ReasonDenied` = '"+textField.getText()+"' WHERE `bookings`.`AppNo` = '"+inpid+"';";
 						
 						//execute query
 						cr.Connection(ordersql);
+						
+						//change the booked status of room
+						String order2 = "UPDATE `hotel`.`rooms` SET `isBooked` = '0' WHERE `rooms`.`RoomNo` = '"+rno+"';";
+						cr.Connection(order2);	
 					}
 						
 					RoomResource ro;
