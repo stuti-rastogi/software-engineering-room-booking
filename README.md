@@ -5,13 +5,6 @@ The project has functionalities for user login, different types of room booking,
 
 For information about classes and methods, index.html doc file that has been provided.
 
-The team of this project is as follows:
-
-1. Stuti Rastogi - Developer
-2. Pallavi Verma - Designer
-3. Amrita Suresh - Tester
-4. Priyanka Mandikal - Requirements manager and project manager
-
 How to use:
 
 1. Have a working internet connection
